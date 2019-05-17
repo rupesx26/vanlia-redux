@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Redux with valina js</title>
+        <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+    </head>
+    <body>
+        <div>
+            <p>
+                Counter: <span id="value">0</span> times
+                <button id="increment">+</button>
+                <button id="decrement">-</button>
+                <button id="incrementIfOdd">increment if Odd</button>
+                <button id="incrementAsync">increment async</button>
+            </p>
+        </div>
+        <script>
+            const valueEl = document.getElementById('value')
+
+            //reducer function
+            //initial state is '0'
+            function counter(state = 0, action) {
+                switch (action.type) {
+                    case 'INCREMENT' : //action type
+                        return state + 1
+                    case 'DECREMENT' :  //action type\
+                        return state - 1
+                    default:
+                        return state        
+                }
+            }
+
+            //create store
+            const store = Redux.createStore(counter)
+
+            //create render 
+            function render() {
+                valueEl.innerHTML = store.getState().toString()
+            }   
+
+            //call render
+            render()
+
+            //subscribe
+            store.subscribe(render)
+
+            document.getElementById('increment').addEventListener('click', function() {
+                store.dispatch({type : 'INCREMENT'}) //action dispatch on click
+            })
+
+            document.getElementById('decrement').addEventListener('click', function() {
+                store.dispatch({type : 'DECREMENT'}) //action dispatch on click
+            })
+
+            document.getElementById('incrementAsync').addEventListener('click', function() {
+                setTimeout(function () {
+                    store.dispatch({type : 'INCREMENT'}) //action dispatch on click
+                }, 1000)
+            })
+
+            document.getElementById('incrementIfOdd').addEventListener('click', function() {
+                console.log(store.getState())
+                if (store.getState() % 2 !== 0) {
+                    store.dispatch({type: 'INCREMENT'}) //action dispatch on click
+                }
+            })
+
+        </script>
+    </body>
+</html>
